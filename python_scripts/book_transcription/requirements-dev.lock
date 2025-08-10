@@ -36,6 +36,10 @@ lxml==6.0.0
     # via ebooklib
 mistralai==1.9.3
     # via book-transcription
+pdf2image==1.17.0
+    # via book-transcription
+pillow==11.3.0
+    # via pdf2image
 pydantic==2.11.7
     # via mistralai
 pydantic-core==2.33.2
