@@ -9,7 +9,12 @@ book.set_identifier(str(uuid.uuid4()))
 book.set_title("From Sepoy to Subedar")
 book.set_language("en")
 
-book.add_author("Subedar Sita Ram")
+book.add_author(
+    "Sita Ram Pandey",
+    file_as="Sita Ram Pandey",
+    role="author",
+    uid="author",
+)
 book.add_author(
     "Lieutenant-Colonel Norgate",
     file_as="Lieutenant-Colonel Norgate",
@@ -40,6 +45,23 @@ dedication.content = (
     """
 )
 book.add_item(dedication)
+
+# Create title page
+title_page = epub.EpubHtml(title="Title Page", file_name="title.xhtml", lang="en")
+title_page.content = (
+    """
+    <div class="title-page">
+        <h1 class="book-title">From Sepoy to Subedar</h1>
+        <div class="author-info">
+            <p class="author">by Sita Ram Pandey</p>
+            <p class="translator">Translated by Lieutenant-Colonel Norgate</p>
+            <p class="editor">Edited by James Lunt</p>
+            <p class="illustrator">Illustrated by Frank Wilson</p>
+        </div>
+    </div>
+    """
+)
+book.add_item(title_page)
 
 # create chapter
 c1 = epub.EpubHtml(title="Intro", file_name="chap_01.xhtml", lang="hr")
@@ -86,7 +108,7 @@ nav_css = epub.EpubItem(
 book.add_item(nav_css)
 
 # basic spine
-book.spine = ["nav", dedication]
+book.spine = ["nav", title_page, dedication]
 
 # write to the file
 filepath = Path("test.epub")
