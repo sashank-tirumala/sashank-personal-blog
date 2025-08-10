@@ -38,7 +38,11 @@ if __name__ == "__main__":
                   "translator_description",
                   "preface_by_translator",
                   "editorial_note",
-                  "acknowledgements"]
+                  "acknowledgements",
+                  "introduction",
+                  "foreward_by_sita_ram",
+                  "beginning",
+                  "joining_the_regiment",]
     for part in book_parts:
         content_paths[part] = raw_content_dir / f"{part}.xhtml"
 
