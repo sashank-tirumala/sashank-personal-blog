@@ -5,7 +5,7 @@ from tqdm import tqdm
 client = OpenAI()
 
 directory = Path(
-    "/Users/sashanktirumala/Desktop/from_sepoy_to_subedar/the_bulwark_of_hindustan_images"
+    "/Users/sashanktirumala/Desktop/from_sepoy_to_subedar/the_march_into_afghanistan_images"
 )
 images = list(directory.glob("*.png"))
 images.sort(key=lambda x: int(x.stem))  # Sort images by their numeric filename
