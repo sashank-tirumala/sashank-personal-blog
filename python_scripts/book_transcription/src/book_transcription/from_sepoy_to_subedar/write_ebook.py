@@ -42,7 +42,11 @@ if __name__ == "__main__":
                   "introduction",
                   "foreward_by_sita_ram",
                   "beginning",
-                  "joining_the_regiment",]
+                  "joining_the_regiment",
+                  "the_gurkha_war",
+                  "the_pindari_war",
+                  "return_to_the_village",
+                ]
     for part in book_parts:
         content_paths[part] = raw_content_dir / f"{part}.xhtml"
 
