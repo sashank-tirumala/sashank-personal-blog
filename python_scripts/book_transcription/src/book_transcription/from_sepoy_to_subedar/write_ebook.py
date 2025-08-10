@@ -33,8 +33,14 @@ if __name__ == "__main__":
     raw_content_dir = current_dir / "raw_content"
     content_paths = {}
     contents = {}
-    content_paths["title_page"] = raw_content_dir / "title_page.xhtml"
-    content_paths["dedication"] = raw_content_dir / "dedication.xhtml"
+    book_parts = ["title_page",
+                  "dedication",
+                  "translator_description",
+                  "preface_by_translator",
+                  "editorial_note",
+                  "acknowledgements"]
+    for part in book_parts:
+        content_paths[part] = raw_content_dir / f"{part}.xhtml"
 
     for content_name, content_path in content_paths.items():
         assert content_path.exists(), f"Content path {content_path} does not exist"
