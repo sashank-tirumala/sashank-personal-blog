@@ -57,6 +57,31 @@ if __name__ == "__main__":
                   "the_wind_of_madness",
                   "the_pensioner"
                 ]
+    book_part_titles = {
+        "title_page": "Title Page",
+        "dedication": "Dedication",
+        "translator_description": "Translator's Description",
+        "preface_by_translator": "Preface by the Translator",
+        "editorial_note": "Editorial Note",
+        "acknowledgements": "Acknowledgements",
+        "introduction": "Introduction",
+        "foreward_by_sita_ram": "Foreword by Sita Ram",
+        "beginning": "The Beginning",
+        "joining_the_regiment": "Joining the Regiment",
+        "the_gurkha_war": "The Gurkha War: 1814 - 1816",
+        "the_pindari_war": "The Pindari War",
+        "return_to_the_village": "Return to the Village",
+        "the_lovely_thakurin": "The Lovely Thakurin",
+        "the_bulwark_of_hindustan": "The Bulwark of Hindustan",
+        "the_march_into_afghanistan": "The March into Afghanistan: 1838-1839",
+        "ghazni_and_kabul": "Ghazni and Kabul",
+        "the_retreat_from_kabul": "The Retreat from Kabul: January 1842",
+        "escape_from_slavery": "Escape from Slavery",
+        "the_first_sikh_war": "The First Sikh War: 1845-1846",
+        "the_second_sikh_war": "The Second Sikh War: 1848-1849",
+        "the_wind_of_madness": "The Wind of Madness",
+        "the_pensioner": "The Pensioner"
+    }
     for part in book_parts:
         content_paths[part] = raw_content_dir / f"{part}.xhtml"
 
@@ -74,7 +99,7 @@ if __name__ == "__main__":
     _add_authors(book)
     content_items = []
     for content_name, content in contents.items():
-        content_item = epub.EpubHtml(title=content_name, file_name=f"{content_name}.xhtml", lang="en")
+        content_item = epub.EpubHtml(title=book_part_titles[content_name], file_name=f"{content_name}.xhtml", lang="en")
         content_item.content = content
         book.add_item(content_item)
         content_items.append(content_item)
