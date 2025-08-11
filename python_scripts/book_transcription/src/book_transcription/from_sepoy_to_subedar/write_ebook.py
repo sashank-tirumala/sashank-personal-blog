@@ -55,6 +55,7 @@ if __name__ == "__main__":
                   "the_first_sikh_war",
                   "the_second_sikh_war",
                   "the_wind_of_madness",
+                  "the_pensioner"
                 ]
     for part in book_parts:
         content_paths[part] = raw_content_dir / f"{part}.xhtml"
