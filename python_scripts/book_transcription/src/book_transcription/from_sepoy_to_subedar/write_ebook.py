@@ -51,8 +51,10 @@ if __name__ == "__main__":
                   "the_march_into_afghanistan",
                   "ghazni_and_kabul",
                   "the_retreat_from_kabul",
-                  "escape_from_slavery"
-
+                  "escape_from_slavery",
+                  "the_first_sikh_war",
+                  "the_second_sikh_war",
+                  "the_wind_of_madness",
                 ]
     for part in book_parts:
         content_paths[part] = raw_content_dir / f"{part}.xhtml"
