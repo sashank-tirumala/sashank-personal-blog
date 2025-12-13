@@ -1,0 +1,47 @@
+chapters:
+  - slug: title_page
+    title: "Title Page"
+  - slug: dedication
+    title: "Dedication"
+  - slug: translator_description
+    title: "Translator's Description"
+  - slug: acknowledgements
+    title: "Acknowledgements"
+  - slug: editorial_note
+    title: "Editorial Note"
+  - slug: preface_by_translator
+    title: "Preface by Translator"
+  - slug: introduction
+    title: "Introduction"
+  - slug: foreward_by_sita_ram
+    title: "Foreword by Sita Ram"
+  - slug: beginning
+    title: "The Beginning"
+  - slug: joining_the_regiment
+    title: "Joining the Regiment"
+  - slug: the_bulwark_of_hindustan
+    title: "The Bulwark of Hindustan"
+  - slug: the_pindari_war
+    title: "The Pindari War"
+  - slug: the_gurkha_war
+    title: "The Gurkha War"
+  - slug: the_lovely_thakurin
+    title: "The Lovely Thakurin"
+  - slug: return_to_the_village
+    title: "Return to the Village"
+  - slug: the_first_sikh_war
+    title: "The First Sikh War"
+  - slug: ghazni_and_kabul
+    title: "Ghazni and Kabul"
+  - slug: the_march_into_afghanistan
+    title: "The March into Afghanistan"
+  - slug: the_retreat_from_kabul
+    title: "The Retreat from Kabul"
+  - slug: escape_from_slavery
+    title: "Escape from Slavery"
+  - slug: the_second_sikh_war
+    title: "The Second Sikh War"
+  - slug: the_wind_of_madness
+    title: "The Wind of Madness"
+  - slug: the_pensioner
+    title: "The Pensioner"

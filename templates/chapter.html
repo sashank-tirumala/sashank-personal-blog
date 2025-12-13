@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">About</a></li>
+                <li><a href="/posts/">Posts</a></li>
+                <li><a href="/books/">Books</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article class="chapter">
+            <header class="chapter-header">
+                <p class="book-title"><a href="/book/{{.Chapter.BookSlug}}/">{{.Chapter.BookTitle}}</a></p>
+                <h1>{{.Chapter.Title}}</h1>
+            </header>
+
+            <div class="chapter-content">
+                {{.Chapter.Content}}
+            </div>
+
+            <nav class="chapter-nav">
+                {{if .Chapter.PrevChapter}}
+                <a href="/book/{{.Chapter.BookSlug}}/{{.Chapter.PrevChapter.Slug}}" class="prev">&larr; {{.Chapter.PrevChapter.Title}}</a>
+                {{else}}
+                <span class="prev"></span>
+                {{end}}
+
+                <a href="/book/{{.Chapter.BookSlug}}/" class="toc">Table of Contents</a>
+
+                {{if .Chapter.NextChapter}}
+                <a href="/book/{{.Chapter.BookSlug}}/{{.Chapter.NextChapter.Slug}}" class="next">{{.Chapter.NextChapter.Title}} &rarr;</a>
+                {{else}}
+                <span class="next"></span>
+                {{end}}
+            </nav>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sashank Tirumala's Blog</p>
+    </footer>
+</body>
+</html>

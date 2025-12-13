@@ -1,3 +1,5 @@
+//go:build build
+
 package main
 
 import (
@@ -27,6 +29,48 @@ type PostMetadata struct {
 	Tags        []string  `yaml:"tags"`
 }
 
+// BookMetadata represents the metadata for a book
+type BookMetadata struct {
+	Title       string `yaml:"title"`
+	Subtitle    string `yaml:"subtitle"`
+	Author      string `yaml:"author"`
+	Translator  string `yaml:"translator"`
+	Editor      string `yaml:"editor"`
+	Illustrator string `yaml:"illustrator"`
+	Year        int    `yaml:"year"`
+	Description string `yaml:"description"`
+	EpubFile    string `yaml:"epub_file"`
+}
+
+// ChapterInfo represents a chapter entry in chapters.yaml
+type ChapterInfo struct {
+	Slug  string `yaml:"slug"`
+	Title string `yaml:"title"`
+}
+
+// ChaptersConfig represents the chapters.yaml structure
+type ChaptersConfig struct {
+	Chapters []ChapterInfo `yaml:"chapters"`
+}
+
+// Book represents a complete book
+type Book struct {
+	Metadata BookMetadata
+	Slug     string
+	Chapters []ChapterInfo
+}
+
+// ChapterData represents data for rendering a chapter
+type ChapterData struct {
+	Title       string
+	Content     template.HTML
+	BookSlug    string
+	BookTitle   string
+	ChapterSlug string
+	PrevChapter *ChapterInfo
+	NextChapter *ChapterInfo
+}
+
 // Post represents a complete blog post
 type Post struct {
 	Metadata PostMetadata
@@ -40,6 +84,9 @@ type PageData struct {
 	Content template.HTML
 	Posts   []Post
 	Post    *Post
+	Books   []Book
+	Book    *Book
+	Chapter *ChapterData
 }
 
 var (
@@ -72,6 +119,8 @@ func main() {
 	os.RemoveAll("public")
 	os.MkdirAll("public", 0755)
 	os.MkdirAll("public/post", 0755)
+	os.MkdirAll("public/book", 0755)
+	os.MkdirAll("public/books", 0755)
 
 	// Copy static files
 	copyDir("static", "public/static")
@@ -87,11 +136,13 @@ func main() {
 	generateHomePage()
 	posts := generatePostPages()
 	generatePostsListPage(posts)
+	books := generateBookPages()
+	generateBooksListPage(books)
 
 	// Copy blog images
 	copyBlogImages()
 
-	fmt.Println("✅ Site built successfully in ./public")
+	fmt.Println("Site built successfully in ./public")
 }
 
 func generateHomePage() {
@@ -298,4 +349,161 @@ func readMarkdownFile(path string) (template.HTML, error) {
 	}
 
 	return template.HTML(buf.String()), nil
+}
+
+func generateBookPages() []Book {
+	books, err := loadAllBooks()
+	if err != nil {
+		log.Printf("Error loading books: %v", err)
+		return nil
+	}
+
+	for _, book := range books {
+		// Generate book table of contents page
+		data := PageData{
+			Title: book.Metadata.Title,
+			Book:  &book,
+		}
+
+		bookDir := fmt.Sprintf("public/book/%s", book.Slug)
+		os.MkdirAll(bookDir, 0755)
+		renderToFile(filepath.Join(bookDir, "index.html"), "book.html", data)
+
+		// Copy EPUB file if it exists
+		if book.Metadata.EpubFile != "" {
+			srcEpub := filepath.Join("books", book.Slug, book.Metadata.EpubFile)
+			dstEpub := filepath.Join(bookDir, book.Metadata.EpubFile)
+			if err := copyFile(srcEpub, dstEpub); err != nil {
+				log.Printf("Error copying EPUB for %s: %v", book.Slug, err)
+			} else {
+				fmt.Printf("Copied: %s\n", dstEpub)
+			}
+		}
+
+		// Generate individual chapter pages
+		for i, chapterInfo := range book.Chapters {
+			chapter, err := loadChapter(&book, chapterInfo.Slug)
+			if err != nil {
+				log.Printf("Error loading chapter %s: %v", chapterInfo.Slug, err)
+				continue
+			}
+
+			// Set prev/next chapters
+			if i > 0 {
+				chapter.PrevChapter = &book.Chapters[i-1]
+			}
+			if i < len(book.Chapters)-1 {
+				chapter.NextChapter = &book.Chapters[i+1]
+			}
+
+			chapterData := PageData{
+				Title:   chapter.Title + " - " + book.Metadata.Title,
+				Book:    &book,
+				Chapter: chapter,
+			}
+
+			chapterPath := filepath.Join(bookDir, chapterInfo.Slug, "index.html")
+			os.MkdirAll(filepath.Dir(chapterPath), 0755)
+			renderToFile(chapterPath, "chapter.html", chapterData)
+		}
+	}
+
+	return books
+}
+
+func generateBooksListPage(books []Book) {
+	data := PageData{
+		Title: "Books",
+		Books: books,
+	}
+
+	renderToFile("public/books/index.html", "books.html", data)
+}
+
+func loadAllBooks() ([]Book, error) {
+	var books []Book
+
+	booksDir := "books"
+	entries, err := os.ReadDir(booksDir)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+
+		book, err := loadBook(entry.Name())
+		if err != nil {
+			log.Printf("Error loading book %s: %v", entry.Name(), err)
+			continue
+		}
+
+		books = append(books, *book)
+	}
+
+	return books, nil
+}
+
+func loadBook(slug string) (*Book, error) {
+	bookDir := filepath.Join("books", slug)
+
+	// Read metadata
+	metadataPath := filepath.Join(bookDir, "metadata.yaml")
+	metadataData, err := os.ReadFile(metadataPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var metadata BookMetadata
+	err = yaml.Unmarshal(metadataData, &metadata)
+	if err != nil {
+		return nil, err
+	}
+
+	// Read chapters config
+	chaptersPath := filepath.Join(bookDir, "chapters.yaml")
+	chaptersData, err := os.ReadFile(chaptersPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var chaptersConfig ChaptersConfig
+	err = yaml.Unmarshal(chaptersData, &chaptersConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Book{
+		Metadata: metadata,
+		Slug:     slug,
+		Chapters: chaptersConfig.Chapters,
+	}, nil
+}
+
+func loadChapter(book *Book, chapterSlug string) (*ChapterData, error) {
+	// Find chapter info
+	var chapterInfo ChapterInfo
+	for _, ch := range book.Chapters {
+		if ch.Slug == chapterSlug {
+			chapterInfo = ch
+			break
+		}
+	}
+
+	// Read chapter content
+	chapterPath := filepath.Join("books", book.Slug, "chapters", chapterSlug+".xhtml")
+	content, err := os.ReadFile(chapterPath)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ChapterData{
+		Title:       chapterInfo.Title,
+		Content:     template.HTML(content),
+		BookSlug:    book.Slug,
+		BookTitle:   book.Metadata.Title,
+		ChapterSlug: chapterSlug,
+	}, nil
 }
