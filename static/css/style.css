@@ -250,9 +250,14 @@ footer {
     border-bottom: none;
 }
 
-.book-item .book-title {
+.book-item a.book-title {
     font-size: 1.2rem;
     font-weight: 500;
+    color: var(--text-color);
+}
+
+.book-item a.book-title:hover {
+    color: var(--link-hover-color);
 }
 
 .download-btn {
@@ -337,6 +342,14 @@ footer {
     margin-bottom: 10px;
 }
 
+.chapter-header p.book-title a {
+    color: var(--text-color);
+}
+
+.chapter-header p.book-title a:hover {
+    color: var(--link-hover-color);
+}
+
 .chapter-header h1 {
     margin-bottom: 10px;
 }
@@ -391,4 +404,12 @@ footer {
 
 .chapter-nav .toc {
     text-align: center;
+}
+
+.chapter-nav a {
+    color: var(--text-color);
+}
+
+.chapter-nav a:hover {
+    color: var(--link-hover-color);
 }
