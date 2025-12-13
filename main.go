@@ -57,6 +57,8 @@ type Book struct {
 	Metadata BookMetadata
 	Slug     string
 	Chapters []ChapterInfo
+	Snippet  template.HTML
+	Intro    template.HTML
 }
 
 // ChapterData represents data for rendering a chapter
@@ -418,10 +420,26 @@ func loadBook(slug string) (*Book, error) {
 		return nil, err
 	}
 
+	// Read snippet (optional) - short intro for books list
+	var snippet template.HTML
+	snippetPath := filepath.Join(bookDir, "snippet.html")
+	if snippetData, err := os.ReadFile(snippetPath); err == nil {
+		snippet = template.HTML(snippetData)
+	}
+
+	// Read intro (optional) - longer intro for book page
+	var intro template.HTML
+	introPath := filepath.Join(bookDir, "intro.html")
+	if introData, err := os.ReadFile(introPath); err == nil {
+		intro = template.HTML(introData)
+	}
+
 	return &Book{
 		Metadata: metadata,
 		Slug:     slug,
 		Chapters: chaptersConfig.Chapters,
+		Snippet:  snippet,
+		Intro:    intro,
 	}, nil
 }
 

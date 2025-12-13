@@ -23,7 +23,12 @@
         <div class="books-list">
             {{range .Books}}
             <article class="book-item">
-                <a href="/book/{{.Slug}}/" class="book-title">{{.Metadata.Title}}</a>
+                <div class="book-info">
+                    <a href="/book/{{.Slug}}/" class="book-title">{{.Metadata.Title}}</a>
+                    {{if .Snippet}}
+                    <div class="book-snippet">{{.Snippet}}</div>
+                    {{end}}
+                </div>
                 {{if .Metadata.EpubFile}}
                 <a href="/book/{{.Slug}}/{{.Metadata.EpubFile}}" class="download-btn" download>Download EPUB</a>
                 {{end}}

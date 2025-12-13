@@ -36,6 +36,12 @@
                 {{end}}
             </header>
 
+            {{if .Book.Intro}}
+            <section class="book-intro">
+                {{.Book.Intro}}
+            </section>
+            {{end}}
+
             <section class="table-of-contents">
                 <h2>Table of Contents</h2>
                 <ol>

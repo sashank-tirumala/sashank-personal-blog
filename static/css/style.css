@@ -241,8 +241,9 @@ footer {
 .book-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 25px 0;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -258,6 +259,33 @@ footer {
 
 .book-item a.book-title:hover {
     color: var(--link-hover-color);
+}
+
+.book-info {
+    flex: 1;
+}
+
+.book-snippet {
+    margin-top: 10px;
+    color: #aaa;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Book page intro */
+section.book-intro {
+    margin: 30px 0;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+    line-height: 1.8;
+}
+
+section.book-intro p {
+    margin-bottom: 15px;
+}
+
+section.book-intro p:last-child {
+    margin-bottom: 0;
 }
 
 .download-btn {
