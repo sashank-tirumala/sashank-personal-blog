@@ -1,0 +1,12 @@
+chapters:
+- slug: "introductory_note"
+  title: "Introductory Note"
+- slug: "lecture_1"
+  title: "Lecture I: The Mahabharatha and it's Critics"
+- slug: "lecture_2"
+  title: "Lecture II: The Story on the Mundane Plane"
+- slug: "lecture_3"
+  title: "Lecture III: The Story on the Ethical Plane"
+- slug: "lecture_4"
+  title: "Lecture IV: The Story on the Metaphysical Plane"
+

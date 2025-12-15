@@ -5,18 +5,21 @@ from tqdm import tqdm
 client = OpenAI()
 
 directory_names = [
-    "escape_from_slavery_images",
-    "the_first_sikh_war_images",
-    "the_second_sikh_war_images",
-    "the_wind_of_madness_images",
-    "the_pensioner_images"
+    # "introductory_note_imgs",
+    # "lecture_1",
+    "lecture_2",
+    "lecture_3",
+    "lecture_4"
 ]
+
+directory_parent_dir = Path("/Users/sashanktirumala/projects/sashank-personal-blog/python_scripts/book_transcription/src/book_transcription/on_the_meaning_of_the_mahabharatha/pdfs")
+
 for directory_name in directory_names:
-    directory = Path(f"/Users/sashanktirumala/Desktop/from_sepoy_to_subedar/{directory_name}")
+    directory = directory_parent_dir / directory_name
     if not directory.exists():
         raise FileNotFoundError(f"Directory {directory} does not exist")
 for directory_name in directory_names:
-    directory = Path(f"/Users/sashanktirumala/Desktop/from_sepoy_to_subedar/{directory_name}")
+    directory = directory_parent_dir / directory_name
     images = list(directory.glob("*.png"))
     images.sort(key=lambda x: int(x.stem))
     images = list(directory.glob("*.png"))
